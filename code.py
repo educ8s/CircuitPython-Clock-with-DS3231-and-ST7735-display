@@ -1,8 +1,7 @@
 import time
-import board, busio
+import board, busio, displayio
 import adafruit_ds3231
 from adafruit_st7735r import ST7735R
-import displayio, terminalio
 from adafruit_display_text import label
 from adafruit_bitmap_font import bitmap_font
 
