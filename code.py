@@ -5,13 +5,6 @@ from adafruit_st7735r import ST7735R
 from adafruit_display_text import label
 from adafruit_bitmap_font import bitmap_font
 
-metric = True # Set to False for degrees Fahrenheit
-
-#Pin definitions for Raspberry Pi Pico
-mosi_pin, clk_pin, reset_pin, cs_pin, dc_pin = board.GP11, board.GP10, board.GP17, board.GP18, board.GP16
-
-days = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-
 def c_to_f(celsius):
     fahrenheit = (celsius * 1.8) + 32
     return fahrenheit
@@ -51,6 +44,27 @@ def set_min_max_temperature():
         max_temperature = temperature
     if temperature < min_temperature:
         min_temperature = temperature
+        
+mosi_pin, clk_pin, reset_pin, cs_pin, dc_pin = board.GP11, board.GP10, board.GP17, board.GP18, board.GP16
+days = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+
+i2c = busio.I2C(board.GP1, board.GP0)
+rtc = adafruit_ds3231.DS3231(i2c)
+
+metric = True # Set to False for degrees Fahrenheit
+
+# UNCOMMENT THE FOLLOWING THREE LINES THE FIRST TIME YOU RUN THE CODE TO SET THE TIME!
+#set_time = time.struct_time((2022, 8, 30, 12, 35, 45, 2, -1, -1)) # Year, Month, Date, Hour, Minutes, Seconds, Week Day
+#print("Setting time to:", set_time)
+#rtc.datetime = set_time
+
+# Comment out the above three lines again after setting the time!
+
+displayio.release_displays()
+spi = busio.SPI(clock=clk_pin, MOSI=mosi_pin)
+display_bus = displayio.FourWire(spi, command=dc_pin, chip_select=cs_pin, reset=reset_pin)
+
+t = rtc.datetime
 
 min_temperature = 100.0
 max_temperature = 0.0
@@ -59,13 +73,10 @@ temperature = 0
 font_file = "fonts/terminal.bdf"
 font = bitmap_font.load_font(font_file)
 
-displayio.release_displays()
-spi = busio.SPI(clock=clk_pin, MOSI=mosi_pin)
-display_bus = displayio.FourWire(spi, command=dc_pin, chip_select=cs_pin, reset=reset_pin)
 display = ST7735R(display_bus, width=128, height=160, bgr = True)
 
-screen = displayio.Group()
-display.show(screen)
+ui = displayio.Group()
+display.show(ui)
 
 # Create date label
 date_label = label.Label(font, color=0x00FF00, text = "Date")
@@ -108,18 +119,14 @@ max_temperature_value_label.anchored_position = (10, 140)
 min_temperature_value_label = label.Label(font, color=0xFFFFFF)
 min_temperature_value_label.anchor_point = (1.0, 0.0)
 min_temperature_value_label.anchored_position = (120, 140)
-screen.append(min_temperature_value_label)
-screen.append(max_temperature_value_label)
-screen.append(time_label)
-screen.append(date_label)
-screen.append(temperature_value_label)
-screen.append(max_temperature_label)
-screen.append(min_temperature_label)
-screen.append(temperature_label)
-
-i2c = busio.I2C(board.GP1, board.GP0)
-rtc = adafruit_ds3231.DS3231(i2c)
-t = rtc.datetime
+ui.append(min_temperature_value_label)
+ui.append(max_temperature_value_label)
+ui.append(time_label)
+ui.append(date_label)
+ui.append(temperature_value_label)
+ui.append(max_temperature_label)
+ui.append(min_temperature_label)
+ui.append(temperature_label)
 
 while True:
     t = rtc.datetime
