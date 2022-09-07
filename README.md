@@ -18,4 +18,4 @@ The parts needed in order to build this project are the following:
 
 🛒  Display: http://educ8s.tv/part/7735
 
-🛒  DS3231 RTC: https://educ8s.tv/part/ds3231
+🛒  DS3231 RTC: https://educ8s.tv/part/DS3231
