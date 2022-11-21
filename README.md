@@ -6,8 +6,21 @@ This is a Raspberry Pi Pico CicruitPython project which displays the current dat
 </p>
 
 # Full Instructions Video
+<p align="center">
+  <img src="preview.jpg" alt="ST7735 DISPLAY CIRCUITPYTHON" width="800">
+</p>
 
-Watch the video here: https://youtu.be/gBofy7MMdIY
+<p align="center">
+🎥 <a href="https://youtu.be/gBofy7MMdIY">Video Tutorial on YouTube</a>
+</p>
+
+<br>
+<br>
+<p align="center">
+| 📺 <a href="https://www.youtube.com/educ8s">YouTube</a>
+| 🌍 <a href="http://www.educ8s.tv">Website</a> | <br>
+</p>
+
 
 # Parts Needed
 
